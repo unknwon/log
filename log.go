@@ -27,9 +27,9 @@ var (
 	Prefix     = "[Log]"
 	TimeFormat = "06-01-02 15:04:05"
 
-	NonColor    bool
-	ShowDepth   bool
-	CallerDepth = 2
+	NonColor           bool
+	ShowDepth          bool
+	DefaultCallerDepth = 2
 
 	LevelFlags = []string{"DEBUG", " INFO", " WARN", "ERROR", "FATAL"}
 )
@@ -50,10 +50,13 @@ const (
 	FATAL
 )
 
-func Print(level Level, format string, args ...interface{}) {
+func Print(level Level, depth int, format string, args ...interface{}) {
 	var depthInfo string
 	if ShowDepth {
-		pc, file, line, ok := runtime.Caller(CallerDepth)
+		if depth == -1 {
+			depth = DefaultCallerDepth
+		}
+		pc, file, line, ok := runtime.Caller(depth)
 		if ok {
 			// Get caller function name.
 			fn := runtime.FuncForPC(pc)
@@ -105,22 +108,42 @@ func Print(level Level, format string, args ...interface{}) {
 	}
 }
 
+func DebugD(depth int, format string, args ...interface{}) {
+	Print(DEBUG, depth, format, args...)
+}
+
 func Debug(format string, args ...interface{}) {
-	Print(DEBUG, format, args...)
+	DebugD(-1, format, args...)
+}
+
+func WarnD(depth int, format string, args ...interface{}) {
+	Print(WARNING, depth, format, args...)
 }
 
 func Warn(format string, args ...interface{}) {
-	Print(WARNING, format, args...)
+	WarnD(-1, format, args...)
+}
+
+func InfoD(depth int, format string, args ...interface{}) {
+	Print(INFO, depth, format, args...)
 }
 
 func Info(format string, args ...interface{}) {
-	Print(INFO, format, args...)
+	InfoD(-1, format, args...)
+}
+
+func ErrorD(depth int, format string, args ...interface{}) {
+	Print(ERROR, depth, format, args...)
 }
 
 func Error(format string, args ...interface{}) {
-	Print(ERROR, format, args...)
+	ErrorD(-1, format, args...)
+}
+
+func FatalD(depth int, format string, args ...interface{}) {
+	Print(FATAL, depth, format, args...)
 }
 
 func Fatal(format string, args ...interface{}) {
-	Print(FATAL, format, args...)
+	FatalD(-1, format, args...)
 }
