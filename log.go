@@ -31,7 +31,7 @@ var (
 	ShowDepth          bool
 	DefaultCallerDepth = 2
 
-	LevelFlags = []string{"DEBUG", " INFO", " WARN", "ERROR", "FATAL"}
+	levelFlags = []string{"DEBUG", " INFO", " WARN", "ERROR", "FATAL"}
 )
 
 func init() {
@@ -71,7 +71,7 @@ func Print(level Level, depth int, format string, args ...interface{}) {
 	}
 	if NonColor {
 		fmt.Printf("%s %s [%s] %s%s\n",
-			Prefix, time.Now().Format(TimeFormat), LevelFlags[level], depthInfo,
+			Prefix, time.Now().Format(TimeFormat), levelFlags[level], depthInfo,
 			fmt.Sprintf(format, args...))
 		if level == FATAL {
 			os.Exit(1)
@@ -82,28 +82,28 @@ func Print(level Level, depth int, format string, args ...interface{}) {
 	switch level {
 	case DEBUG:
 		fmt.Printf("%s \033[36m%s\033[0m [\033[34m%s\033[0m] %s%s\n",
-			Prefix, time.Now().Format(TimeFormat), LevelFlags[level], depthInfo,
+			Prefix, time.Now().Format(TimeFormat), levelFlags[level], depthInfo,
 			fmt.Sprintf(format, args...))
 	case INFO:
 		fmt.Printf("%s \033[36m%s\033[0m [\033[32m%s\033[0m] %s%s\n",
-			Prefix, time.Now().Format(TimeFormat), LevelFlags[level], depthInfo,
+			Prefix, time.Now().Format(TimeFormat), levelFlags[level], depthInfo,
 			fmt.Sprintf(format, args...))
 	case WARNING:
 		fmt.Printf("%s \033[36m%s\033[0m [\033[33m%s\033[0m] %s%s\n",
-			Prefix, time.Now().Format(TimeFormat), LevelFlags[level], depthInfo,
+			Prefix, time.Now().Format(TimeFormat), levelFlags[level], depthInfo,
 			fmt.Sprintf(format, args...))
 	case ERROR:
 		fmt.Printf("%s \033[36m%s\033[0m [\033[31m%s\033[0m] %s%s\n",
-			Prefix, time.Now().Format(TimeFormat), LevelFlags[level], depthInfo,
+			Prefix, time.Now().Format(TimeFormat), levelFlags[level], depthInfo,
 			fmt.Sprintf(format, args...))
 	case FATAL:
 		fmt.Printf("%s \033[36m%s\033[0m [\033[35m%s\033[0m] %s%s\n",
-			Prefix, time.Now().Format(TimeFormat), LevelFlags[level], depthInfo,
+			Prefix, time.Now().Format(TimeFormat), levelFlags[level], depthInfo,
 			fmt.Sprintf(format, args...))
 		os.Exit(1)
 	default:
 		fmt.Printf("%s %s [%s] %s%s\n",
-			Prefix, time.Now().Format(TimeFormat), LevelFlags[level], depthInfo,
+			Prefix, time.Now().Format(TimeFormat), levelFlags[level], depthInfo,
 			fmt.Sprintf(format, args...))
 	}
 }
